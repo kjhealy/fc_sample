@@ -138,30 +138,31 @@ ggsave("figures/df_fac_line.png")
 
 df %>%
     group_by(start_year, party, sex) %>%
-    tally() %>%
+    summarize(N = n()) %>%
+    mutate(freq = N / sum(N)) %>%
     ungroup() %>%
     complete(start_year, party, sex,
-             fill = list(n = 0))
+             fill = list(N = 0, freq = 0))
 
-#> # A tibble: 16 x 4
-#>    start_year party      sex       n
-#>    <date>     <chr>      <chr> <dbl>
-#>  1 2013-01-03 Democrat   F        21
-#>  2 2013-01-03 Democrat   M        37
-#>  3 2013-01-03 Republican F         8
-#>  4 2013-01-03 Republican M        71
-#>  5 2015-01-03 Democrat   F         0
-#>  6 2015-01-03 Democrat   M         1
-#>  7 2015-01-03 Republican F         0
-#>  8 2015-01-03 Republican M         5
-#>  9 2017-01-03 Democrat   F         6
-#> 10 2017-01-03 Democrat   M        19
-#> 11 2017-01-03 Republican F         2
-#> 12 2017-01-03 Republican M        28
-#> 13 2019-01-03 Democrat   F        33
-#> 14 2019-01-03 Democrat   M        18
-#> 15 2019-01-03 Republican F         1
-#> 16 2019-01-03 Republican M        30
+#> # A tibble: 16 x 5
+#>    start_year party      sex       N   freq
+#>    <date>     <chr>      <chr> <dbl>  <dbl>
+#>  1 2013-01-03 Democrat   F        21 0.362
+#>  2 2013-01-03 Democrat   M        37 0.638
+#>  3 2013-01-03 Republican F         8 0.101
+#>  4 2013-01-03 Republican M        71 0.899
+#>  5 2015-01-03 Democrat   F         0 0
+#>  6 2015-01-03 Democrat   M         1 1
+#>  7 2015-01-03 Republican F         0 0
+#>  8 2015-01-03 Republican M         5 1
+#>  9 2017-01-03 Democrat   F         6 0.24
+#> 10 2017-01-03 Democrat   M        19 0.76
+#> 11 2017-01-03 Republican F         2 0.0667
+#> 12 2017-01-03 Republican M        28 0.933
+#> 13 2019-01-03 Democrat   F        33 0.647
+#> 14 2019-01-03 Democrat   M        18 0.353
+#> 15 2019-01-03 Republican F         1 0.0323
+#> 16 2019-01-03 Republican M        30 0.968
 
 df %>%
     group_by(start_year, party, sex) %>%
